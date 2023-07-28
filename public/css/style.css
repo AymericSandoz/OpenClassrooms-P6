@@ -222,7 +222,6 @@ button,
 .main__categories img {
   box-shadow: rgba(242, 234, 234, 0.24) 0px 3px 8px;
   transition: transform 0.3s ease;
-  /* Combinez les deux transitions en une seule déclaration */
   opacity: 0;
 }
 @media screen and (max-width: 920px) {
@@ -241,18 +240,14 @@ button,
 }
 .main__categories img.appear {
   animation: fadeIn 400ms ease-in-out forwards;
-  /* Déclenche l'animation de fondu pour les images avec la classe appear */
 }
 
 .modal {
   display: none;
-  /* Par défaut, la modal est cachée */
   position: fixed;
-  /* Position fixe pour la superposer au contenu */
   z-index: 1;
   height: 80%;
   max-width: 90%;
-  /* Assure que la modal est en avant-plan */
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
