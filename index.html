@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JustStreamIt</title>
+    <link rel="stylesheet" href="./public/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+</head>
+
+<body>
+    <header class="header">
+        <h1 class="header__title">JustStreamIt </h1>
+        <nav>
+            <ul>
+                <li><a>Acceuil</a></li>
+                <li><a>Catégorie</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="main__movie">
+            <div class="main__movie__content">
+                <h2 class="main__movie__title"></h2>
+                <button class="main__movie__button">Regarder</button>
+                <p class="main__movie__description"></p>
+            </div>
+            <div class="main__movie__img__container">
+                <img class="main__movie__img" src="" alt="">
+                <button class="main__movie__mobile__button">
+                    <i class="fas fa-play play-icon"></i>
+                </button>
+            </div>
+        </section>
+
+        <section id="main_category_bloc" class="main__categories">
+        </section>
+
+        <section id="first_category_bloc" class="main__categories">
+        </section>
+
+        <section id="second_category_bloc" class="main__categories">
+        </section>
+
+        <section id="third_category_bloc" class="main__categories">
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p class="footer__text">©JustStreamIt . Tous droits réservés.</p>
+    </footer>
+
+
+    <div id="myModal" class="modal">
+        <span class="js-close-modal close">&times;</span>
+        <div class="modal-content">
+        </div>
+    </div>
+</body>
+
+<script src="./js/index.js"></script>
+
+</html>
