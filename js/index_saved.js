@@ -520,3 +520,4 @@ document.body.addEventListener("click", function (event) {
     modal.style.display = "none"; // Masquer la modal
   }
 });
+////////////:
