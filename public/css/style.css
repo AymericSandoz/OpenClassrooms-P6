@@ -67,7 +67,7 @@ button,
     font-size: 1.5rem;
   }
 }
-.header .header__title {
+.header__title {
   float: left;
   text-align: left;
   color: #e50914;
@@ -103,23 +103,23 @@ button,
     box-shadow: none;
   }
 }
-.main__movie .main__movie__img__container {
+.main__movie__img__container {
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
 }
-.main__movie .main__movie__img__container .main__movie__img {
+.main__movie__img__container .main__movie__img {
   margin: auto;
   width: 300px;
   box-shadow: rgba(242, 234, 234, 0.24) 0px 3px 8px;
   border-radius: 10px;
   transition: transform 0.3s ease;
 }
-.main__movie .main__movie__img__container .main__movie__img:hover {
+.main__movie__img__container .main__movie__img:hover {
   transform: scale(1.01);
 }
-.main__movie .main__movie__img__container .main__movie__mobile__button {
+.main__movie__img__container .main__movie__mobile__button {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -135,17 +135,17 @@ button,
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   transition: transform 0.3s ease;
 }
-.main__movie .main__movie__img__container .main__movie__mobile__button:hover {
+.main__movie__img__container .main__movie__mobile__button:hover {
   color: black;
   background-color: white;
   opacity: 1;
 }
 @media screen and (min-width: 480px) {
-  .main__movie .main__movie__img__container .main__movie__mobile__button {
+  .main__movie__img__container .main__movie__mobile__button {
     display: none;
   }
 }
-.main__movie .main__movie__content {
+.main__movie__content {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -153,20 +153,20 @@ button,
   gap: 10px;
 }
 @media screen and (min-width: 480px) {
-  .main__movie .main__movie__content {
+  .main__movie__content {
     width: 40%;
   }
 }
-.main__movie .main__movie__content .main__movie__title {
+.main__movie__content .main__movie__title {
   font-size: 35px;
   text-align: center;
 }
 @media screen and (max-width: 480px) {
-  .main__movie .main__movie__content .main__movie__title {
+  .main__movie__content .main__movie__title {
     font-size: 25px;
   }
 }
-.main__movie .main__movie__content .main__movie__button {
+.main__movie__content .main__movie__button {
   border-radius: 5px;
   width: 100px;
   height: 50px;
@@ -176,21 +176,21 @@ button,
   background-color: white;
 }
 @media screen and (max-width: 480px) {
-  .main__movie .main__movie__content .main__movie__button {
+  .main__movie__content .main__movie__button {
     display: none;
   }
 }
-.main__movie .main__movie__content .main__movie__button:hover {
+.main__movie__content .main__movie__button:hover {
   color: black;
   background-color: gray;
 }
-.main__movie .main__movie__content .main__movie__description {
+.main__movie__content .main__movie__description {
   font-size: 20px;
   width: 40%;
   text-align: center;
 }
 @media screen and (max-width: 480px) {
-  .main__movie .main__movie__content .main__movie__description {
+  .main__movie__content .main__movie__description {
     display: none;
   }
 }

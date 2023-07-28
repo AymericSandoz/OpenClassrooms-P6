@@ -68,7 +68,7 @@ button,
         font-size: 1.5rem;
     }
 
-    .header__title {
+    &__title {
         float: left;
         text-align: left;
         color: #e50914;
@@ -109,7 +109,7 @@ button,
         box-shadow: none;
     }
 
-    .main__movie__img__container {
+    &__img__container {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -162,7 +162,7 @@ button,
 
     }
 
-    .main__movie__content {
+    &__content {
         display: flex;
         justify-content: center;
         align-items: center;
