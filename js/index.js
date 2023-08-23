@@ -359,6 +359,7 @@ let categories = ["Drama", "History", "Comedy"];
 createCategorieSections(categories);
 let close_modal = document.querySelector(".js-close-modal");
 close_modal.addEventListener("click", function () {
+  console.log("lol");
   closeModal();
 });
 
@@ -366,8 +367,9 @@ let modal = document.getElementById("myModal");
 
 // Ajoutez un gestionnaire d'événements au clic sur le body
 document.body.addEventListener("click", function (event) {
+  console.log(event.target != modal);
   // Vérifiez si l'élément cliqué est en dehors de la modal
-  if (event.target != modal) {
+  if (event.target !== modal && !modal.contains(event.target)) {
     closeModal();
   }
 });

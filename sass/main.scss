@@ -61,10 +61,12 @@ button,
     font-size: 2rem;
     box-shadow: rgba(242, 234, 234, 0.24) 0px 3px 8px;
 
+    @media screen and (max-width: 668px) {
+        padding: 20px;
+    }
+
     @media screen and (max-width: 480px) {
         flex-direction: column;
-        padding: 20px;
-
         font-size: 1.5rem;
     }
 
@@ -121,12 +123,14 @@ button,
             width: 300px;
             box-shadow: rgba(242, 234, 234, 0.24) 0px 3px 8px;
             border-radius: 10px;
-
             transition: transform 0.3s ease;
+
+            @media screen and (max-width: 668px) {
+                width: 200px;
+            }
 
             &:hover {
                 transform: scale(1.01);
-
             }
         }
 
@@ -180,6 +184,7 @@ button,
 
             @media screen and (max-width: 480px) {
                 font-size: 25px;
+
             }
 
         }
@@ -207,10 +212,10 @@ button,
 
         .main__movie__description {
             font-size: 20px;
-            width: 40%;
+            width: 80%;
             text-align: center;
 
-            @media screen and (max-width: 480px) {
+            @media screen and (max-width: 668px) {
                 display: none;
             }
         }
@@ -276,7 +281,7 @@ button,
     position: fixed;
     z-index: 1;
     height: 80%;
-
+    padding: 20px;
     max-width: 90%;
     top: 50%;
     left: 50%;
@@ -292,24 +297,30 @@ button,
         opacity: 1;
     }
 
-    .close {
-        color: black;
-        background-color: white;
-        border-radius: 50%;
-        float: right;
-        width: 30px;
-        height: 30px;
-        padding: 10px;
-        margin: 20px;
-        font-weight: bold;
+    .close-modal-wrapper {
         display: flex;
-        justify-content: center;
+        justify-content: flex-end;
         align-items: center;
+
+        .close {
+            color: black;
+            background-color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            padding: 10px;
+            margin: 5px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     }
 
     .close:hover,
     .close:focus {
-        color: black;
+        color: white;
+        background-color: gray;
         text-decoration: none;
         cursor: pointer;
     }
@@ -317,8 +328,10 @@ button,
     .modal-content {
         display: flex;
         gap: 45px;
-        padding: 20px;
-        margin-top: 20px;
+
+        @media screen and (max-width: 668px) {
+            flex-direction: column;
+        }
 
         .modal-right-content,
         .modal-left-content {

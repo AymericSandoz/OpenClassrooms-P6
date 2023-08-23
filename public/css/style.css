@@ -60,10 +60,14 @@ button,
   font-size: 2rem;
   box-shadow: rgba(242, 234, 234, 0.24) 0px 3px 8px;
 }
+@media screen and (max-width: 668px) {
+  .header {
+    padding: 20px;
+  }
+}
 @media screen and (max-width: 480px) {
   .header {
     flex-direction: column;
-    padding: 20px;
     font-size: 1.5rem;
   }
 }
@@ -115,6 +119,11 @@ button,
   box-shadow: rgba(242, 234, 234, 0.24) 0px 3px 8px;
   border-radius: 10px;
   transition: transform 0.3s ease;
+}
+@media screen and (max-width: 668px) {
+  .main__movie__img__container .main__movie__img {
+    width: 200px;
+  }
 }
 .main__movie__img__container .main__movie__img:hover {
   transform: scale(1.01);
@@ -186,10 +195,10 @@ button,
 }
 .main__movie__content .main__movie__description {
   font-size: 20px;
-  width: 40%;
+  width: 80%;
   text-align: center;
 }
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 668px) {
   .main__movie__content .main__movie__description {
     display: none;
   }
@@ -247,6 +256,7 @@ button,
   position: fixed;
   z-index: 1;
   height: 80%;
+  padding: 20px;
   max-width: 90%;
   top: 50%;
   left: 50%;
@@ -261,15 +271,19 @@ button,
 .modal.visible {
   opacity: 1;
 }
-.modal .close {
+.modal .close-modal-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.modal .close-modal-wrapper .close {
   color: black;
   background-color: white;
   border-radius: 50%;
-  float: right;
   width: 30px;
   height: 30px;
   padding: 10px;
-  margin: 20px;
+  margin: 5px;
   font-weight: bold;
   display: flex;
   justify-content: center;
@@ -277,15 +291,19 @@ button,
 }
 .modal .close:hover,
 .modal .close:focus {
-  color: black;
+  color: white;
+  background-color: gray;
   text-decoration: none;
   cursor: pointer;
 }
 .modal .modal-content {
   display: flex;
   gap: 45px;
-  padding: 20px;
-  margin-top: 20px;
+}
+@media screen and (max-width: 668px) {
+  .modal .modal-content {
+    flex-direction: column;
+  }
 }
 .modal .modal-content .modal-right-content,
 .modal .modal-content .modal-left-content {
