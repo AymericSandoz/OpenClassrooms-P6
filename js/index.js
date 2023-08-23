@@ -160,40 +160,6 @@ const create_popular_movies_section = async (movies) => {
   }
 };
 
-const bloc = [
-  "main_category_bloc",
-  "first_category_bloc",
-  "second_category_bloc",
-  "third_category_bloc",
-];
-
-// Récupère le film le mieux noté puis affiche l'afffiche
-getTopRatedMovie()
-  .then((movie) => {
-    let image = document.querySelector(".main__movie__img");
-    image.src = movie.image_url;
-    const title = document.querySelector(".main__movie__title");
-    title.innerText = movie.title;
-    const description = document.querySelector(".main__movie__description");
-    description.innerText = movie.description;
-
-    image.addEventListener("click", function () {
-      openModal(movie);
-    });
-  })
-  .catch((error) => {
-    console.error("Une erreur s'est produite lors de la requête :", error);
-  });
-
-// Récupère les 7 films les mieux noté puis les affichent
-getTopRatedMovies(7)
-  .then((movies) => {
-    create_popular_movies_section(movies);
-  })
-  .catch((error) => {
-    console.error("Une erreur s'est produite lors de la requête :", error);
-  });
-
 // Créer les 3 section avec une catégorie donnée
 const createCategorieSections = async (categories) => {
   createCategorySection(bloc[1], categories[0]);
@@ -333,11 +299,9 @@ function initSwiper(containerId, movies) {
 
   let currentStartIndex = 0;
   let currentEndIndex = 3;
-  const totalImages = images.length;
 
   // Fonction pour afficher l'image suivante
   function showNextImage() {
-    console.log("currentStartIndex", currentStartIndex);
     currentStartIndex = currentStartIndex + 1;
     currentEndIndex = currentStartIndex - 4;
 
@@ -370,8 +334,53 @@ function initSwiper(containerId, movies) {
   rightArrow.addEventListener("click", showNextImage);
 }
 
+const bloc = [
+  "main_category_bloc",
+  "first_category_bloc",
+  "second_category_bloc",
+  "third_category_bloc",
+];
+
+// Main movie Section
+// Récupère le film le mieux noté puis affiche l'afffiche
+getTopRatedMovie()
+  .then((movie) => {
+    let container = document.querySelector(".main__movie__img__container");
+    var image = document.createElement("img");
+    image.setAttribute("alt", "Film principal");
+    image.classList.add("main__movie__img");
+    image.src = movie.image_url;
+    container.prepend(image);
+
+    image.src = movie.image_url;
+    const title = document.querySelector(".main__movie__title");
+    title.innerText = movie.title;
+    const description = document.querySelector(".main__movie__description");
+    description.innerText = movie.description;
+
+    image.addEventListener("click", function () {
+      openModal(movie);
+    });
+  })
+  .catch((error) => {
+    console.error("Une erreur s'est produite lors de la requête :", error);
+  });
+
+// Most popular movies section
+// Récupère les 7 films les mieux noté puis les affichent
+getTopRatedMovies(7)
+  .then((movies) => {
+    create_popular_movies_section(movies);
+  })
+  .catch((error) => {
+    console.error("Une erreur s'est produite lors de la requête :", error);
+  });
+
+// Categories sections
 let categories = ["Drama", "History", "Comedy"];
 createCategorieSections(categories);
+
+// Modal Section
 let close_modal = document.querySelector(".js-close-modal");
 close_modal.addEventListener("click", function () {
   closeModal();
