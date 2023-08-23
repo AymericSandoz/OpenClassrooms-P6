@@ -1,3 +1,4 @@
+// Fonction qui renvoie les différentes catégories de films
 const getMoviesCategories = async () => {
   let url = "http://127.0.0.1:8000/api/v1/genres/";
   let categories = [];
@@ -15,7 +16,7 @@ const getMoviesCategories = async () => {
   return categories;
 };
 
-// Fonction qui récupère le film le mieux noté
+// Fonction qui renvoie le film le mieux noté
 const getTopRatedMovie = async (number_of_movies) => {
   url = "http://127.0.0.1:8000/api/v1/titles/?sort_by=-imdb_score";
   data = await fetchPage(url);
@@ -23,9 +24,10 @@ const getTopRatedMovie = async (number_of_movies) => {
   const sortedMovies = data.results;
   const bestMovie = sortedMovies[0];
 
+  // aller récupérer la description du film
   data = await fetchPage(bestMovie.url);
-
   bestMovie["description"] = data.description;
+
   return bestMovie;
 };
 
@@ -64,6 +66,7 @@ const getTopRatedMovies = async (number_of_movies) => {
   return topRatedMovies;
 };
 
+//Fonction pour récupérer les films d'une catégorie donné trié en fonction de la score imdb
 const getMoviesFromOneCategories = async (category, number_of_movies) => {
   let movies = [];
   const firstPageUrl = `http://127.0.0.1:8000/api/v1/titles/?genre=${category}&sort_by=-imdb_score`;
@@ -82,6 +85,7 @@ const getMoviesFromOneCategories = async (category, number_of_movies) => {
   return movies;
 };
 
+// Fonction pour afficher les films d'une catégories donnée
 const createCategorySection = async (section_id, category_name) => {
   const movies = await getMoviesFromOneCategories(category_name, 7);
   const section = document.getElementById(`${section_id}`);
@@ -103,6 +107,7 @@ const createCategorySection = async (section_id, category_name) => {
   }
 };
 
+//Fonction pour afficher les images
 const display_images = (
   movies,
   bloc__images,
@@ -111,11 +116,12 @@ const display_images = (
   bloc__images.innerHTML = "";
   let selectedMovies;
 
+  //Pour les tailles d'écran inférieur à 920px on n'affiche tous les films et on gère le swiper directement avec du css
   if (document.querySelector("main").offsetWidth <= 920) {
-    // If the screen width is less than or equal to 480px (mobile), set selectedMovies to movies
+    // If the screen width is less than or equal to 920px (mobile), set selectedMovies to movies
     selectedMovies = movies;
   } else {
-    // If the screen width is greater than 480px (not mobile), select movies based on the indices
+    // If the screen width is greater than 920px (not mobile), select movies based on the indices
     selectedMovies = movieIndicesToDisplay.map((index) => movies[index]);
   }
 
@@ -132,6 +138,8 @@ const display_images = (
     });
   });
 };
+
+// Fonction pour afficher la section des films les plus populaires
 const create_popular_movies_section = async (movies) => {
   const section = document.getElementById("main_category_bloc");
   const h1 = document.createElement("h1");
@@ -148,8 +156,6 @@ const create_popular_movies_section = async (movies) => {
   display_images(movies, bloc__images);
 
   if (document.querySelector("main").offsetWidth > 920) {
-    console.log("hahah wtf");
-
     initSwiper("main_category_bloc", movies);
   }
 };
@@ -161,6 +167,7 @@ const bloc = [
   "third_category_bloc",
 ];
 
+// Récupère le film le mieux noté puis affiche l'afffiche
 getTopRatedMovie()
   .then((movie) => {
     let image = document.querySelector(".main__movie__img");
@@ -178,6 +185,7 @@ getTopRatedMovie()
     console.error("Une erreur s'est produite lors de la requête :", error);
   });
 
+// Récupère les 7 films les mieux noté puis les affichent
 getTopRatedMovies(7)
   .then((movies) => {
     create_popular_movies_section(movies);
@@ -186,12 +194,14 @@ getTopRatedMovies(7)
     console.error("Une erreur s'est produite lors de la requête :", error);
   });
 
+// Créer les 3 section avec une catégorie donnée
 const createCategorieSections = async (categories) => {
   createCategorySection(bloc[1], categories[0]);
   createCategorySection(bloc[2], categories[1]);
   createCategorySection(bloc[3], categories[2]);
 };
 
+//Fonction utile pour la modal qui permet de retourner un div contenant une information(genres, descriptions etc...) sur un film
 const createWrapper = (elementType, value, labelText, isList = false) => {
   let wrapper = document.createElement("div");
   wrapper.className = "wrapper";
@@ -213,6 +223,7 @@ const createWrapper = (elementType, value, labelText, isList = false) => {
   return wrapper;
 };
 
+// Fonction pour créer puis afficher la modal
 const openModal = async (movie) => {
   movie = await fetchPage(movie.url);
 
@@ -293,6 +304,7 @@ const openModal = async (movie) => {
   document.querySelector("main").style.opacity = 0.3;
 };
 
+// Fonction pour masquer la modale
 const closeModal = () => {
   let modal = document.getElementById("myModal");
   modal.style.display = "none";
@@ -316,7 +328,7 @@ function initSwiper(containerId, movies) {
 
   const rightArrow = document.createElement("div");
   rightArrow.classList.add("swiper-arrow", "right-arrow");
-  rightArrow.innerHTML = '<i class="fleche-droite fas fa-arrow-right"></i>';
+  rightArrow.innerHTML = '<i class="fas fa-arrow-right"></i>';
   container.appendChild(rightArrow);
 
   let currentStartIndex = 0;
@@ -325,7 +337,9 @@ function initSwiper(containerId, movies) {
 
   // Fonction pour afficher l'image suivante
   function showNextImage() {
+    console.log("currentStartIndex", currentStartIndex);
     currentStartIndex = currentStartIndex + 1;
+    currentEndIndex = currentStartIndex - 4;
 
     display_images(movies, bloc_images, [
       currentStartIndex % 7,
@@ -341,6 +355,7 @@ function initSwiper(containerId, movies) {
     if (currentEndIndex == -5) {
       currentEndIndex = 2;
     }
+    currentStartIndex = currentEndIndex + 4;
 
     display_images(movies, bloc_images, [
       (currentEndIndex - 3 + 7) % 7,
@@ -359,7 +374,6 @@ let categories = ["Drama", "History", "Comedy"];
 createCategorieSections(categories);
 let close_modal = document.querySelector(".js-close-modal");
 close_modal.addEventListener("click", function () {
-  console.log("lol");
   closeModal();
 });
 
@@ -367,8 +381,7 @@ let modal = document.getElementById("myModal");
 
 // Ajoutez un gestionnaire d'événements au clic sur le body
 document.body.addEventListener("click", function (event) {
-  console.log(event.target != modal);
-  // Vérifiez si l'élément cliqué est en dehors de la modal
+  // Vérifiez si l'élément cliqué est en dehors de la modal(et des enfants)
   if (event.target !== modal && !modal.contains(event.target)) {
     closeModal();
   }
