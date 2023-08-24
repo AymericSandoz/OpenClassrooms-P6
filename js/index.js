@@ -1,3 +1,14 @@
+// Fonction pour effectuer une requête fetch à une page spécifique
+const fetchPage = async (url) => {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Erreur lors de la requête fetch pour l'URL : ${url}`, error);
+  }
+};
+
 // Fonction qui renvoie les différentes catégories de films
 const getMoviesCategories = async () => {
   let url = "http://127.0.0.1:8000/api/v1/genres/";
@@ -17,7 +28,7 @@ const getMoviesCategories = async () => {
 };
 
 // Fonction qui renvoie le film le mieux noté
-const getTopRatedMovie = async (number_of_movies) => {
+const getTopRatedMovie = async () => {
   url = "http://127.0.0.1:8000/api/v1/titles/?sort_by=-imdb_score";
   data = await fetchPage(url);
 
@@ -29,18 +40,6 @@ const getTopRatedMovie = async (number_of_movies) => {
   bestMovie["description"] = data.description;
 
   return bestMovie;
-};
-
-// Fonction pour effectuer une requête fetch à une page spécifique
-const fetchPage = async (url) => {
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(`Erreur lors de la requête fetch pour l'URL : ${url}`, error);
-    throw error;
-  }
 };
 
 // Fonction pour récupérer les films les mieux notés à partir de toutes les pages
@@ -85,6 +84,27 @@ const getMoviesFromOneCategories = async (category, number_of_movies) => {
   return movies;
 };
 
+// Fonction pour afficher la section des films les plus populaires
+const create_popular_movies_section = async (movies) => {
+  const section = document.getElementById("main_category_bloc");
+  const h1 = document.createElement("h1");
+  h1.textContent = "Les plus populaires";
+  section.appendChild(h1);
+  let bloc__images = document.createElement("div");
+  let main_category_bloc_content = document.createElement("div");
+  bloc__images.classList.add("bloc__images");
+  main_category_bloc_content.appendChild(bloc__images);
+  main_category_bloc_content.classList.add("main_bloc_content");
+
+  section.appendChild(main_category_bloc_content);
+
+  display_images(movies, bloc__images);
+
+  if (document.querySelector("main").offsetWidth > 920) {
+    initSwiper("main_category_bloc", movies);
+  }
+};
+
 // Fonction pour afficher les films d'une catégories donnée
 const createCategorySection = async (section_id, category_name) => {
   const movies = await getMoviesFromOneCategories(category_name, 7);
@@ -107,6 +127,13 @@ const createCategorySection = async (section_id, category_name) => {
   }
 };
 
+// Créer les 3 section avec une catégorie donnée
+const createCategorieSections = async (categories) => {
+  createCategorySection(bloc[1], categories[0]);
+  createCategorySection(bloc[2], categories[1]);
+  createCategorySection(bloc[3], categories[2]);
+};
+
 //Fonction pour afficher les images
 const display_images = (
   movies,
@@ -122,7 +149,7 @@ const display_images = (
     selectedMovies = movies;
   } else {
     // If the screen width is greater than 920px (not mobile), select movies based on the indices
-    selectedMovies = movieIndicesToDisplay.map((index) => movies[index]);
+    selectedMovies = movieIndicesToDisplay.map((index) => movies[index]);//Permet d'extraire un sous ensemble du tableau movies
   }
 
   selectedMovies.forEach((movie) => {
@@ -139,33 +166,60 @@ const display_images = (
   });
 };
 
-// Fonction pour afficher la section des films les plus populaires
-const create_popular_movies_section = async (movies) => {
-  const section = document.getElementById("main_category_bloc");
-  const h1 = document.createElement("h1");
-  h1.textContent = "Les plus populaires";
-  section.appendChild(h1);
-  let bloc__images = document.createElement("div");
-  let main_category_bloc_content = document.createElement("div");
-  bloc__images.classList.add("bloc__images");
-  main_category_bloc_content.appendChild(bloc__images);
-  main_category_bloc_content.classList.add("main_bloc_content");
+function initSwiper(containerId, movies) {
+  const category = document.getElementById(containerId);
+  const container = category.querySelector(".main_bloc_content");
 
-  section.appendChild(main_category_bloc_content);
+  const bloc_images = container.querySelector(".bloc__images");
+  const images = container.getElementsByTagName("img");
 
-  display_images(movies, bloc__images);
+  // Créer les flèches gauche et droite
+  const leftArrow = document.createElement("div");
+  leftArrow.classList.add("swiper-arrow", "left-arrow");
+  leftArrow.innerHTML = '<i class="fas fa-arrow-left"></i>';
+  container.prepend(leftArrow);
 
-  if (document.querySelector("main").offsetWidth > 920) {
-    initSwiper("main_category_bloc", movies);
+  const rightArrow = document.createElement("div");
+  rightArrow.classList.add("swiper-arrow", "right-arrow");
+  rightArrow.innerHTML = '<i class="fas fa-arrow-right"></i>';
+  container.appendChild(rightArrow);
+
+  let currentStartIndex = 0;
+  let currentEndIndex = 3;
+
+  // Fonction pour afficher l'image suivante
+  function showNextImage() {
+    currentStartIndex = currentStartIndex + 1;
+    currentEndIndex = currentStartIndex - 4;
+
+    display_images(movies, bloc_images, [
+      currentStartIndex % 7,
+      (currentStartIndex + 1) % 7,
+      (currentStartIndex + 2) % 7,
+      (currentStartIndex + 3) % 7,
+    ]);
   }
-};
 
-// Créer les 3 section avec une catégorie donnée
-const createCategorieSections = async (categories) => {
-  createCategorySection(bloc[1], categories[0]);
-  createCategorySection(bloc[2], categories[1]);
-  createCategorySection(bloc[3], categories[2]);
-};
+  // Fonction pour afficher l'image précédente
+  function showPreviousImage() {
+    currentEndIndex = currentEndIndex - 1;
+    if (currentEndIndex == -5) {
+      currentEndIndex = 2;
+    }
+    currentStartIndex = currentEndIndex + 4;
+
+    display_images(movies, bloc_images, [
+      (currentEndIndex - 3 + 7) % 7,
+      (currentEndIndex - 2 + 7) % 7,
+      (currentEndIndex - 1 + 7) % 7,
+      (currentEndIndex + 7) % 7,
+    ]);
+  }
+
+  // Ajouter les événements click sur les flèches
+  leftArrow.addEventListener("click", showPreviousImage);
+  rightArrow.addEventListener("click", showNextImage);
+}
 
 //Fonction utile pour la modal qui permet de retourner un div contenant une information(genres, descriptions etc...) sur un film
 const createWrapper = (elementType, value, labelText, isList = false) => {
@@ -278,61 +332,6 @@ const closeModal = () => {
   modal_content.innerHTML = "";
   document.querySelector("main").style.opacity = 1;
 };
-
-function initSwiper(containerId, movies) {
-  const category = document.getElementById(containerId);
-  const container = category.querySelector(".main_bloc_content");
-
-  const bloc_images = container.querySelector(".bloc__images");
-  const images = container.getElementsByTagName("img");
-
-  // Créer les flèches gauche et droite
-  const leftArrow = document.createElement("div");
-  leftArrow.classList.add("swiper-arrow", "left-arrow");
-  leftArrow.innerHTML = '<i class="fas fa-arrow-left"></i>';
-  container.prepend(leftArrow);
-
-  const rightArrow = document.createElement("div");
-  rightArrow.classList.add("swiper-arrow", "right-arrow");
-  rightArrow.innerHTML = '<i class="fas fa-arrow-right"></i>';
-  container.appendChild(rightArrow);
-
-  let currentStartIndex = 0;
-  let currentEndIndex = 3;
-
-  // Fonction pour afficher l'image suivante
-  function showNextImage() {
-    currentStartIndex = currentStartIndex + 1;
-    currentEndIndex = currentStartIndex - 4;
-
-    display_images(movies, bloc_images, [
-      currentStartIndex % 7,
-      (currentStartIndex + 1) % 7,
-      (currentStartIndex + 2) % 7,
-      (currentStartIndex + 3) % 7,
-    ]);
-  }
-
-  // Fonction pour afficher l'image précédente
-  function showPreviousImage() {
-    currentEndIndex = currentEndIndex - 1;
-    if (currentEndIndex == -5) {
-      currentEndIndex = 2;
-    }
-    currentStartIndex = currentEndIndex + 4;
-
-    display_images(movies, bloc_images, [
-      (currentEndIndex - 3 + 7) % 7,
-      (currentEndIndex - 2 + 7) % 7,
-      (currentEndIndex - 1 + 7) % 7,
-      (currentEndIndex + 7) % 7,
-    ]);
-  }
-
-  // Ajouter les événements click sur les flèches
-  leftArrow.addEventListener("click", showPreviousImage);
-  rightArrow.addEventListener("click", showNextImage);
-}
 
 const bloc = [
   "main_category_bloc",
